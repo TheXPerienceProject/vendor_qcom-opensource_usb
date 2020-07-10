@@ -47,7 +47,7 @@ target=`getprop ro.board.platform`
 # Override USB default composition
 #
 # If USB persist config not set, set default configuration
-if [ "$(getprop persist.vendor.usb.config)" == "" -a \
+if [ "$(getprop persist.vendor.usb.config)" == "" -a "$(getprop ro.build.type)" != "user" -a \
 	"$(getprop init.svc.vendor.usb-gadget-hal-1-0)" != "running" ]; then
     if [ "$esoc_name" != "" ]; then
 	  setprop persist.vendor.usb.config diag,diag_mdm,qdss,qdss_mdm,serial_cdev,dpl,rmnet,adb
@@ -101,15 +101,8 @@ if [ "$(getprop persist.vendor.usb.config)" == "" -a \
 	              "sdm845" | "sdm710")
 		          setprop persist.vendor.usb.config diag,serial_cdev,rmnet,dpl,adb
 		      ;;
-	              "msmnile" | "sm6150" | "trinket" | "lito" | "atoll" | "bengal")
+	              "msmnile" | "sm6150" | "trinket" | "lito" | "atoll" | "bengal" | "lahaina")
 			  setprop persist.vendor.usb.config diag,serial_cdev,rmnet,dpl,qdss,adb
-		      ;;
-                      "lahaina")
-			      if [ -d /config/usb_gadget/g1/functions/qdss.qdss ]; then
-				      setprop persist.vendor.usb.config diag,serial_cdev,rmnet,dpl,qdss,adb
-			      else
-				      setprop persist.vendor.usb.config diag,serial_cdev,rmnet,dpl,adb
-			      fi
 		      ;;
 	              *)
 		          setprop persist.vendor.usb.config diag,adb
@@ -122,6 +115,12 @@ if [ "$(getprop persist.vendor.usb.config)" == "" -a \
 	      ;;
 	  esac
       fi
+fi
+
+# This check is needed for GKI 1.0 targets where QDSS is not available
+if [ "$(getprop persist.vendor.usb.config)" == "diag,serial_cdev,rmnet,dpl,qdss,adb" -a \
+     ! -d /config/usb_gadget/g1/functions/qdss.qdss ]; then
+      setprop persist.vendor.usb.config diag,serial_cdev,rmnet,dpl,adb
 fi
 
 # Start peripheral mode on primary USB controllers for Automotive platforms
