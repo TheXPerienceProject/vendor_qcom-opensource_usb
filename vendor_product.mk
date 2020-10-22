@@ -1,4 +1,4 @@
-ifneq ($(DEVICE_DECLARE_USB_BASIC), true)
+ifeq ($(filter platina lavender, $(TARGET_DEVICE)),)
 
 # USB init scripts
 PRODUCT_PACKAGES += init.qcom.usb.rc init.qcom.usb.sh
@@ -28,4 +28,4 @@ ifeq ($(TARGET_USES_USB_GADGET_HAL), true)
   PRODUCT_PACKAGES += android.hardware.usb.gadget@1.0-service-qti
 endif
 
-endif # DEVICE_DECLARE_USB_BASIC
+endif # DEVICE
