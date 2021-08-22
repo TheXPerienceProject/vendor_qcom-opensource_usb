@@ -6,6 +6,8 @@ PRODUCT_PROPERTY_OVERRIDES += vendor.usb.rndis.func.name=gsi
 PRODUCT_PROPERTY_OVERRIDES += vendor.usb.rmnet.func.name=gsi
 PRODUCT_PROPERTY_OVERRIDES += vendor.usb.rmnet.inst.name=rmnet
 PRODUCT_PROPERTY_OVERRIDES += vendor.usb.dpl.inst.name=dpl
+PRODUCT_SOONG_NAMESPACES += vendor/qcom/opensource/usb/etc
+
 
 ifneq ($(filter bengal monaco trinket,$(TARGET_BOARD_PLATFORM)),)
   PRODUCT_PROPERTY_OVERRIDES += vendor.usb.controller=4e00000.dwc3
