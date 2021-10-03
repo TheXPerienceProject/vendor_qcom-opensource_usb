@@ -164,9 +164,6 @@ on property:vendor.usb.controller=* && property:vendor.usb.use_gadget_hal=0
    setprop sys.usb.controller ${vendor.usb.controller}
    setprop sys.usb.configfs 1
 
-on property:persist.vendor.usb.config=* && property:vendor.usb.use_gadget_hal=0
-    setprop persist.sys.usb.config ${persist.vendor.usb.config}
-
 on boot && property:ro.boot.usbconfigfs=true
         setprop sys.usb.configfs 1
 
