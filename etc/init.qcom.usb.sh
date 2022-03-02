@@ -155,7 +155,13 @@ if [ -d /config/usb_gadget ]; then
 		msm_serial_hex=`printf _SN:%08X $msm_serial`
 	fi
 
-	setprop vendor.usb.product_string "$machine_type-$soc_hwplatform$msm_chipid_hex$msm_serial_hex"
+#	setprop vendor.usb.product_string "$machine_type-$soc_hwplatform$msm_chipid_hex$msm_serial_hex"
+
+	usb_product=`getprop vendor.usb.product_string`;
+	vendor_model=`getprop ro.product.vendor.model`;
+	if [ "$usb_product" == "" ]; then
+		setprop vendor.usb.product_string "$vendor_model"
+	fi
 
 	# ADB requires valid iSerialNumber; if ro.serialno is missing, use dummy
 	serialnumber=`cat /config/usb_gadget/g1/strings/0x409/serialnumber 2> /dev/null`
