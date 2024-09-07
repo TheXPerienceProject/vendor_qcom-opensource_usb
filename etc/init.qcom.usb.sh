@@ -157,12 +157,6 @@ if [ -d /config/usb_gadget ]; then
 
 #	setprop vendor.usb.product_string "$machine_type-$soc_hwplatform$msm_chipid_hex$msm_serial_hex"
 
-	usb_product=`getprop vendor.usb.product_string`;
-	vendor_model=`getprop ro.product.vendor.model`;
-	if [ "$usb_product" == "" ]; then
-		setprop vendor.usb.product_string "$vendor_model"
-	fi
-
 	# ADB requires valid iSerialNumber; if ro.serialno is missing, use dummy
 	serialnumber=`cat /config/usb_gadget/g1/strings/0x409/serialnumber 2> /dev/null`
 	if [ "$serialnumber" == "" ]; then
@@ -170,6 +164,14 @@ if [ -d /config/usb_gadget ]; then
 		echo $serialno > /config/usb_gadget/g1/strings/0x409/serialnumber
 	fi
 	setprop vendor.usb.configfs 1
+fi
+
+# update product
+marketname=`getprop ro.product.marketname`
+if [ "$marketname" != "" ]; then
+    setprop vendor.usb.product_string "$marketname"
+else
+    setprop vendor.usb.product_string "$(getprop ro.product.model)"
 fi
 
 #
